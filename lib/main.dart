@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const url = 'http://192.168.100.9:3000/api/courses/';
+const url = 'url of where server is running...';
 Future<List<Album>> fetchAlbums() async {
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
