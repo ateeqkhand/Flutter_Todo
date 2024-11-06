@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const url = 'url of where server is running...';
+const url = 'http://192.168.100.23:3000/api/courses/';
 Future<List<Album>> fetchAlbums() async {
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
@@ -60,7 +60,9 @@ class Album {
   final String name;
 
   const Album({required this.id, required this.name});
-  Album.empty() : id = 0, name = '';
+  Album.empty()
+      : id = 0,
+        name = '';
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
@@ -213,19 +215,63 @@ class _CustomMaterialAppState extends State<CustomMaterialApp> {
                           return ListTile(
                             title: Center(
                               child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    Text("${index + 1}: ${album.name}"),
-                                    IconButton(
-                                      onPressed: _isLoading ? null : () => _handleDelete(album.id.toString()),
-                                      icon: const Icon(Icons.delete),
-                                    ),
-                                    IconButton(
-                                      onPressed: _isLoading ? null : () => _handleEdit(album),
-                                      icon: const Icon(Icons.drive_file_rename_outline),
-                                    ),
-                                  ],
+                                child: Container(
+                                  width: MediaQuery.of(context)
+                                      .size
+                                      .width, 
+                                  height:
+                                      70, 
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical:
+                                          0,),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          10), // Padding inside the container
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.blue),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween, 
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        // manage text in left side and if more then one line put it to the next line.
+                                        child: Text(
+                                          "${index + 1}: ${album.name}",
+                                          style:
+                                              const TextStyle(fontSize: 16.0),
+                                          overflow: TextOverflow
+                                              .ellipsis,
+                                          maxLines:
+                                              5, 
+                                        ),
+                                      ),
+                                      // both button right side 
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            onPressed: _isLoading
+                                                ? null
+                                                : () => _handleDelete(
+                                                    album.id.toString()),
+                                            icon: const Icon(Icons.delete,
+                                                color: Colors.red),
+                                          ),
+                                          IconButton(
+                                            onPressed: _isLoading
+                                                ? null
+                                                : () => _handleEdit(album),
+                                            icon: const Icon(
+                                                Icons.drive_file_rename_outline,
+                                                color: Colors.blue),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
